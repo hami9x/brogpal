@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<title w-html="w.title"></title>
+	</head>
+	<body>
+    <div id="pages">
+        <t-userinfo v-name="Hai Thanh Nguyen" v-age="18"></t-userinfo>
+        <wpage page="home" title="Wade Home">
+            <p><a href="post">View posts.</a></p>
+            <p><a href="http://google.com">External link.</a></p>
+        </wpage>
+        <wpage page="post" title="View posts">
+            <p><a href="home">Home page.</a></p>
+            <p><a href="post~new">Post an article.</a></p>
+            <wpage page="new" title="Post an article">
+                <p><a href="post">Back to view.</a></p>
+            </wpage>
+        </wpage>
+    </div>
+        <script src="/public/bower_components/jquery/dist/jquery.js"></script>
+        <script src="/public/bower_components/html5-history-api/history.js?redirect=true"></script>
+        <script src="/public/bower_components/route-recognizer/dist/route-recognizer.js"></script>
+        <script src="/public/bower_components/rivets/dist/rivets.js"></script>
+        <script src="/public/bower_components/wadejs/js/wade.js"></script>
+
+        <welement id="t-userinfo">
+            <p><strong>{Name}</strong>, <em>{Age}</em></p>
+        </welement>
+        <script>
+            var _wade = new Wade();
+        </script>
+		<script src="/public/app.js"></script>
+	</body>
+</html>
