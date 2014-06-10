@@ -29,7 +29,7 @@ func main() {
 		Name: "Hai Thanh Nguyen",
 		Age:  18,
 	})
-	wade.RegisterPageHandler("login_handler", func() interface{} {
+	wade.RegisterPageHandler("pg-user-login", func() interface{} {
 		req := http.Service().NewRequest(http.MethodGet, "/auth")
 		promise := wd.NewPromise(&AuthedStat{false}, req.DoAsync())
 		promise.OnSuccess(func(r *http.Response) wd.ModelUpdater {

@@ -4,31 +4,34 @@
 		<link rel="stylesheet" href="/public/css/main.css"/>
 	</head>
 	<body>
-    <wpage>
-        <t-userinfo attr-Name="Hai Thanh Nguyen" attr-Age="18"></t-userinfo>
-        <wpage id="pg-home" title="Wade Home">
-            <p><a href=":pg-post">View posts.</a></p>
-			<p><a href=":pg-user-login">Login.</a></p>
-            <p><a href="http://google.com">External link.</a></p>
-        </wpage>
-		<wpage id="pg-user" title="User page">
-			<t-userinfo attr-Name="Awesome" attr-Age="99"></t-userinfo>
-			<wpage id="pg-user-login" handler="login_handler">
-				<span w-if="AuthGened">Authentication info is generated.</span>
-				<span w-unless="AuthGened">Generating auth info...</span>
+	    <wpage>
+			<wpage>
+		        <t-userinfo attr-Name="Hai Thanh Nguyen" attr-Age="18"></t-userinfo>
+		        <wpage id="pg-home" title="Wade Home">
+		            <p><a href=":pg-post">View posts.</a></p>
+					<p><a href=":pg-user-login">Login.</a></p>
+		            <p><a href="http://google.com">External link.</a></p>
+		        </wpage>
+				<wpage id="pg-user" title="User page">
+					<t-userinfo attr-Name="Awesome" attr-Age="99"></t-userinfo>
+					<wpage id="pg-user-login">
+						<span w-if="AuthGened">Authentication info is generated.</span>
+						<span w-unless="AuthGened">Generating auth info...</span>
+					</wpage>
+		        </wpage>
+		        <wpage id="pg-post" title="View posts">
+		            <p><a href=":pg-home">Home page.</a></p>
+		            <p><a href=":pg-post-new">Post an article.</a></p>
+		            <wpage id="pg-post-new" title="Post an article">
+		                <p><a href=":pg-post">Back to view.</a></p>
+		            </wpage>
+		        </wpage>
 			</wpage>
-        </wpage>
-        <wpage id="pg-post" title="View posts">
-            <p><a href=":pg-home">Home page.</a></p>
-            <p><a href=":pg-post-new">Post an article.</a></p>
-            <wpage id="pg-post-new" title="Post an article">
-                <p><a href=":pg-post">Back to view.</a></p>
-            </wpage>
-        </wpage>
-    </wpage>
-	<wpage id="pg-not-found" title="404">
-		Page not found.
-	</wpage>
+			<wpage id="pg-not-found" title="404">
+				Page not found.
+			</wpage>
+	    </wpage>
+	
         <script src="/public/bower_components/jquery/dist/jquery.js"></script>
         <script src="/public/bower_components/html5-history-api/history.js?redirect=true"></script>
         <script src="/public/bower_components/route-recognizer/dist/route-recognizer.js"></script>
