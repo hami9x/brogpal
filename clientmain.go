@@ -16,6 +16,15 @@ type AuthedStat struct {
 
 func main() {
 	wade := wd.WadeUp("_wade")
+	wade.RegisterPages(map[string]string{
+		"/home":       "pg-home",
+		"/post":       "pg-post",
+		"/post/new":   "pg-post-new",
+		"/user":       "pg-user",
+		"/user/login": "pg-user-login",
+		"/404":        "pg-not-found",
+	})
+	wade.SetNotFoundPage("pg-not-found")
 	wade.RegisterElement("t-userinfo", &UserInfo{
 		Name: "Hai Thanh Nguyen",
 		Age:  18,
@@ -24,8 +33,8 @@ func main() {
 		req := http.Service().NewRequest(http.MethodGet, "/auth")
 		promise := wd.NewPromise(&AuthedStat{false}, req.DoAsync())
 		promise.OnSuccess(func(r *http.Response) wd.ModelUpdater {
-			return func(as *AuthedStat) {
-				as.AuthGened = true
+			return func(au *AuthedStat) {
+				au.AuthGened = true
 			}
 		})
 		return promise.Model()
