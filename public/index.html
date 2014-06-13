@@ -10,6 +10,7 @@
 		        <wpage id="pg-home" title="Wade Home">
 		            <p><a href=":pg-post">View posts.</a></p>
 					<p><a href=":pg-user-login">Login.</a></p>
+					<p><a href=":pg-user-register">Register.</a></p>
 		            <p><a href="http://google.com">External link.</a></p>
 		        </wpage>
 				<wpage id="pg-user" title="User page">
@@ -19,6 +20,14 @@
 						<span w-unless="AuthGened">Generating auth info...</span>
 					</wpage>
 		        </wpage>
+				<wpage id="pg-user-register" title="Register">
+					Username: <input type="text" rv-value="Data.Username"/>
+					<t-errorlist bind-attr-Errors="Errors"></t-errorlist>
+					Password: <input type="password" rv-value="Data.Password"/>
+					<t-errorlist bind-attr-Errors="Errors"></t-errorlist>
+					<a rv-on-click="Reset">Reset</a>
+					<a rv-on-click="Submit">Submit</a>
+				</wpage>
 		        <wpage id="pg-post" title="View posts">
 		            <p><a href=":pg-home">Home page.</a></p>
 		            <p><a href=":pg-post-new">Post an article.</a></p>
@@ -38,8 +47,16 @@
         <script src="/public/bower_components/rivets/dist/rivets.js"></script>
         <script src="/public/bower_components/wadejs/js/wade.js"></script>
 
-        <welement id="t-userinfo" attributes="attr-Name attr-Age">
+        <welement id="t-userinfo" attributes="Name Age">
             <p><strong>{Name}</strong>, <em>{Age}</em></p>
+        </welement>
+		<welement id="t-errorlist" attributes="Errors">
+			<span rv-html="Errors.Username"></span>
+            <div class="error">
+				<ul>
+					<li rv-each-error="Errors">{ error }</li>
+				</ul>
+			</div>
         </welement>
         <script>
             var _wade = new Wade("pg-home", "/web");

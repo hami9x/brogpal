@@ -139,10 +139,6 @@ func main() {
 		}
 	})
 
-	m.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/web/", http.StatusMovedPermanently)
-	})
-
 	m.Get("/auth", func(r http.ResponseWriter) {
 		username, token := makeRandomUserToken()
 		user := &model.User{
@@ -161,6 +157,23 @@ func main() {
 
 	m.Get("/api/test", func(r http.ResponseWriter) {
 		r.Write([]byte("CLGT"))
+	})
+	m.Post("/api/user/register", func(h http.ResponseWriter, r *http.Request) {
+		rawdata, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			log.Println(err.Error())
+		}
+		udata := &model.User{}
+		if err = json.Unmarshal(rawdata, udata); err != nil {
+			panic(err.Error())
+		}
+		resp, err := json.Marshal(model.UsernamePasswordValidator().Validate(udata).ToMessages())
+		checkErr(err)
+		h.Write(resp)
+	})
+
+	m.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/web/", http.StatusMovedPermanently)
 	})
 
 	m.Run()

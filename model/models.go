@@ -18,4 +18,5 @@ type User struct {
 	Username string `db:"username"  json:"username"`
 	Role     uint32 `db:"role"`
 	Token    string `db:"token" json:"token"`
+	Password string `json:"password"`
 }
