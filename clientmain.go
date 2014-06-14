@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gopherjs/gopherjs/js"
 	"github.com/phaikawl/brogpal/model"
 	wd "github.com/phaikawl/wade"
 	"github.com/phaikawl/wade/services/http"
@@ -23,15 +22,11 @@ type UsernamePassword struct {
 }
 
 type RegUser struct {
-	Data   UsernamePassword
-	Errors js.Object
+	wd.Validated
+	Data UsernamePassword
 
 	Reset  func()
 	Submit func()
-}
-
-type Test struct {
-	Errors map[string]interface{}
 }
 
 func main() {
@@ -50,10 +45,7 @@ func main() {
 
 	wade.RegisterNewTag("t-userinfo", UserInfo{})
 
-	wade.RegisterNewTag("t-errorlist", Test{map[string]interface{}{
-		"Username": "SHit",
-		"Password": "Shk",
-	}})
+	wade.RegisterNewTag("t-errorlist", wd.ErrorsBinding{})
 
 	wade.Pager().RegisterHandler("pg-user-login", func() interface{} {
 		req := http.Service().NewRequest(http.MethodGet, "/auth")
@@ -71,7 +63,7 @@ func main() {
 
 	wade.Pager().RegisterHandler("pg-user-register", func() interface{} {
 		ureg := new(RegUser)
-		ureg.Errors = js.Global.Call("createObj")
+		ureg.Validated.Init(ureg.Data)
 		//ureg.Errors = map[string]map[string]interface{}{
 		//	"Username": make(map[string]interface{}),
 		//	"Password": make(map[string]interface{}),
@@ -84,7 +76,7 @@ func main() {
 		ureg.Submit = func() {
 			//validate here...
 			//then send
-			wd.SendFormTo("/api/user/register", ureg.Data, ureg.Errors).OnSuccess(
+			wd.SendFormTo("/api/user/register", ureg.Data, &ureg.Validated).OnSuccess(
 				func(r *http.Response) wd.ModelUpdater {
 					//ureg.Errors = js.Global.Call("createObj")
 					//println(ureg.Errors)

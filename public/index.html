@@ -50,7 +50,7 @@
             <p><strong>{Name}</strong>, <em>{Age}</em></p>
         </welement>
 		<welement id="t-errorlist" bindables="Errors">
-			<span rv-html="Errors.Username"></span>
+			<span rv-html="Errors.$get.Password.v.minChar.v.$val"></span>
             <div class="error">
 				<ul>
 					<li rv-each-error="Errors">{ error }</li>
