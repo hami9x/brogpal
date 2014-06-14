@@ -22,9 +22,9 @@
 		        </wpage>
 				<wpage id="pg-user-register" title="Register">
 					Username: <input type="text" rv-value="Data.Username"/>
-					<t-errorlist bind-attr-Errors="Errors"></t-errorlist>
+					<t-errorlist bind-Errors="Errors"></t-errorlist>
 					Password: <input type="password" rv-value="Data.Password"/>
-					<t-errorlist bind-attr-Errors="Errors"></t-errorlist>
+					<t-errorlist bind-Errors="Errors"></t-errorlist>
 					<a rv-on-click="Reset">Reset</a>
 					<a rv-on-click="Submit">Submit</a>
 				</wpage>
@@ -45,12 +45,11 @@
         <script src="/public/bower_components/html5-history-api/history.js?redirect=true"></script>
         <script src="/public/bower_components/route-recognizer/dist/route-recognizer.js"></script>
         <script src="/public/bower_components/rivets/dist/rivets.js"></script>
-        <script src="/public/bower_components/wadejs/js/wade.js"></script>
 
         <welement id="t-userinfo" attributes="Name Age">
             <p><strong>{Name}</strong>, <em>{Age}</em></p>
         </welement>
-		<welement id="t-errorlist" attributes="Errors">
+		<welement id="t-errorlist" bindables="Errors">
 			<span rv-html="Errors.Username"></span>
             <div class="error">
 				<ul>
@@ -58,9 +57,17 @@
 				</ul>
 			</div>
         </welement>
-        <script>
-            var _wade = new Wade("pg-home", "/web");
-        </script>
+		<script>
+			function createObj() {
+				return {
+					"Username": "ll",
+					"Password": "kkk",
+				}
+			}
+			function test(m) {
+				console.log(m);
+			}
+		</script>
 		<script src="/public/app.js"></script>
 	</body>
 </html>

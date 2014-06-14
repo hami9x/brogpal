@@ -115,6 +115,12 @@ func main() {
 	m.Use(martini.Static("../public", martini.StaticOptions{
 		Prefix: "/public",
 	}))
+	gopath := os.Getenv("GOPATH")
+	if gopath != "" {
+		m.Use(martini.Static(gopath, martini.StaticOptions{
+			Prefix: "/gopath",
+		}))
+	}
 	m.Use(func(resp http.ResponseWriter, req *http.Request) {
 		if strings.HasPrefix(req.URL.Path, "/api/") {
 			token := req.Header.Get("AuthToken")

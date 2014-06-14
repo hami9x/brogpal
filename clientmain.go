@@ -31,12 +31,13 @@ type RegUser struct {
 }
 
 type Test struct {
-	Errors js.Object
+	Errors map[string]interface{}
 }
 
 func main() {
-	wade := wd.WadeUp("_wade")
-	wade.RegisterPages(map[string]string{
+	//js.Global.Call("test", jquery.NewJQuery("title"))
+	wade := wd.WadeUp("pg-home", "/web")
+	wade.Pager().RegisterPages(map[string]string{
 		"/home":          "pg-home",
 		"/post":          "pg-post",
 		"/post/new":      "pg-post-new",
@@ -45,13 +46,16 @@ func main() {
 		"/user/register": "pg-user-register",
 		"/404":           "pg-not-found",
 	})
-	wade.SetNotFoundPage("pg-not-found")
+	wade.Pager().SetNotFoundPage("pg-not-found")
 
-	wade.RegisterElement("t-userinfo", new(UserInfo))
+	wade.RegisterNewTag("t-userinfo", UserInfo{})
 
-	wade.RegisterElement("t-errorlist", &Test{js.Global.Call("createObj")})
+	wade.RegisterNewTag("t-errorlist", Test{map[string]interface{}{
+		"Username": "SHit",
+		"Password": "Shk",
+	}})
 
-	wade.RegisterPageHandler("pg-user-login", func() interface{} {
+	wade.Pager().RegisterHandler("pg-user-login", func() interface{} {
 		req := http.Service().NewRequest(http.MethodGet, "/auth")
 		promise := wd.NewPromise(&AuthedStat{false}, req.DoAsync())
 		promise.OnSuccess(func(r *http.Response) wd.ModelUpdater {
@@ -65,7 +69,7 @@ func main() {
 		return promise.Model()
 	})
 
-	wade.RegisterPageHandler("pg-user-register", func() interface{} {
+	wade.Pager().RegisterHandler("pg-user-register", func() interface{} {
 		ureg := new(RegUser)
 		ureg.Errors = js.Global.Call("createObj")
 		//ureg.Errors = map[string]map[string]interface{}{
@@ -82,7 +86,7 @@ func main() {
 			//then send
 			wd.SendFormTo("/api/user/register", ureg.Data, ureg.Errors).OnSuccess(
 				func(r *http.Response) wd.ModelUpdater {
-					ureg.Errors = js.Global.Call("createObj")
+					//ureg.Errors = js.Global.Call("createObj")
 					//println(ureg.Errors)
 					//err := r.DecodeDataTo(ureg.Errors)
 					//if err != nil {
