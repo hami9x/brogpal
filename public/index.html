@@ -1,12 +1,12 @@
 <html>
 	<head>
-		<title w-html="w.title"></title>
+		<title></title>
 		<link rel="stylesheet" href="/public/css/main.css"/>
 	</head>
 	<body>
 	    <wpage>
 			<wpage>
-		        <t-userinfo attr-Name="Hai Thanh Nguyen" attr-Age="18"></t-userinfo>
+		        <!--<t-userinfo attr-name="Hai Thanh Nguyen" attr-age="18"></t-userinfo>-->
 		        <wpage id="pg-home" title="Wade Home">
 		            <p><a href=":pg-post">View posts.</a></p>
 					<p><a href=":pg-user-login">Login.</a></p>
@@ -14,19 +14,22 @@
 		            <p><a href="http://google.com">External link.</a></p>
 		        </wpage>
 				<wpage id="pg-user" title="User page">
-					<t-userinfo attr-Name="Awesome" attr-Age="99"></t-userinfo>
+					<!--<t-userinfo attr-name="Awesome" attr-age="99"></t-userinfo>-->
 					<wpage id="pg-user-login">
-						<span w-if="AuthGened">Authentication info is generated.</span>
-						<span w-unless="AuthGened">Generating auth info...</span>
+						<!--<span wd-if="AuthGened">Authentication info is generated.</span>-->
+						<!--<span wd-unless="AuthGened">Generating auth info...</span>-->
 					</wpage>
 		        </wpage>
 				<wpage id="pg-user-register" title="Register">
-					Username: <input type="text" rv-value="Data.Username"/>
-					<t-errorlist bind-Errors="Errors"></t-errorlist>
-					Password: <input type="password" rv-value="Data.Password"/>
-					<t-errorlist bind-Errors="Errors"></t-errorlist>
-					<a rv-on-click="Reset">Reset</a>
-					<a rv-on-click="Submit">Submit</a>
+					Username: <input type="text" bind-value="Data.Username"/>
+					<span bind-html="Data.Username"></span>
+					<!--<t-errorlist wd-bind-errors="Errors.Username"></t-errorlist>-->
+					<!--<t-test bind="Error: Data.Username" wd-class-shit="Data.Shit"></t-test>-->
+					Password: <input type="password" bind-value="Data.Password"/>
+					<!--<t-errorlist wd-bind-errors="Errors.Password"></t-errorlist>-->
+					<!--<t-test wd-bind-value="Data.Password"></t-test>-->
+					<a bind-on-click="Reset">Reset</a>
+					<a bind-on-click="Submit">Submit</a>
 				</wpage>
 		        <wpage id="pg-post" title="View posts">
 		            <p><a href=":pg-home">Home page.</a></p>
@@ -44,19 +47,21 @@
         <script src="/public/bower_components/jquery/dist/jquery.js"></script>
         <script src="/public/bower_components/html5-history-api/history.js?redirect=true"></script>
         <script src="/public/bower_components/route-recognizer/dist/route-recognizer.js"></script>
-        <script src="/public/bower_components/rivets/dist/rivets.js"></script>
+		<script src="/public/bower_components/watch/src/watch.js"></script>
 
         <welement id="t-userinfo" attributes="Name Age">
             <p><strong>{Name}</strong>, <em>{Age}</em></p>
         </welement>
 		<welement id="t-errorlist" bindables="Errors">
-			<span rv-html="Errors.$get.Password.v.minChar.v.$val"></span>
             <div class="error">
 				<ul>
-					<li rv-each-error="Errors">{ error }</li>
+					<li bind="error(Errors)">{ error }</li>
 				</ul>
 			</div>
         </welement>
+		<welement id="t-test" bindables="Value">
+			<p>My value is <strong wd-html="Value"></strong> :D.</p>
+		</welement>
 		<script>
 			function createObj() {
 				return {

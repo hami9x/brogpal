@@ -24,9 +24,35 @@ type UsernamePassword struct {
 type RegUser struct {
 	wd.Validated
 	Data UsernamePassword
+}
 
-	Reset  func()
-	Submit func()
+func (r *RegUser) Reset() {
+	r.Data.Password = ""
+	r.Data.Username = ""
+}
+
+func (r *RegUser) Submit() {
+	//validate here...
+	//then send
+	wd.SendFormTo("/api/user/register", r.Data, &r.Validated).OnSuccess(
+		func(r *http.Response) wd.ModelUpdater {
+			//ureg.Errors = js.Global.Call("createObj")
+			//println(ureg.Errors)
+			//err := r.DecodeDataTo(ureg.Errors)
+			//if err != nil {
+			//	panic(err.Error())
+			//}
+			//println(ureg.errors["Password"])
+			return nil
+		})
+}
+
+type Test struct {
+	Value string
+}
+
+type ErrorListModel struct {
+	Errors map[string]interface{}
 }
 
 func main() {
@@ -44,8 +70,8 @@ func main() {
 	wade.Pager().SetNotFoundPage("pg-not-found")
 
 	wade.RegisterNewTag("t-userinfo", UserInfo{})
-
-	wade.RegisterNewTag("t-errorlist", wd.ErrorsBinding{})
+	wade.RegisterNewTag("t-errorlist", ErrorListModel{})
+	wade.RegisterNewTag("t-test", Test{})
 
 	wade.Pager().RegisterHandler("pg-user-login", func() interface{} {
 		req := http.Service().NewRequest(http.MethodGet, "/auth")
@@ -64,30 +90,7 @@ func main() {
 	wade.Pager().RegisterHandler("pg-user-register", func() interface{} {
 		ureg := new(RegUser)
 		ureg.Validated.Init(ureg.Data)
-		//ureg.Errors = map[string]map[string]interface{}{
-		//	"Username": make(map[string]interface{}),
-		//	"Password": make(map[string]interface{}),
-		//}
-		ureg.Reset = func() {
-			ureg.Data.Password = ""
-			ureg.Data.Username = ""
-		}
 
-		ureg.Submit = func() {
-			//validate here...
-			//then send
-			wd.SendFormTo("/api/user/register", ureg.Data, &ureg.Validated).OnSuccess(
-				func(r *http.Response) wd.ModelUpdater {
-					//ureg.Errors = js.Global.Call("createObj")
-					//println(ureg.Errors)
-					//err := r.DecodeDataTo(ureg.Errors)
-					//if err != nil {
-					//	panic(err.Error())
-					//}
-					//println(ureg.errors["Password"])
-					return nil
-				})
-		}
 		return ureg
 	})
 
