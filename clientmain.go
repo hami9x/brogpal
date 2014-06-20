@@ -57,41 +57,42 @@ type ErrorListModel struct {
 
 func main() {
 	//js.Global.Call("test", jquery.NewJQuery("title"))
-	wade := wd.WadeUp("pg-home", "/web")
-	wade.Pager().RegisterPages(map[string]string{
-		"/home":          "pg-home",
-		"/post":          "pg-post",
-		"/post/new":      "pg-post-new",
-		"/user":          "pg-user",
-		"/user/login":    "pg-user-login",
-		"/user/register": "pg-user-register",
-		"/404":           "pg-not-found",
-	})
-	wade.Pager().SetNotFoundPage("pg-not-found")
-
-	wade.RegisterNewTag("t-userinfo", UserInfo{})
-	wade.RegisterNewTag("t-errorlist", ErrorListModel{})
-	wade.RegisterNewTag("t-test", Test{})
-
-	wade.Pager().RegisterHandler("pg-user-login", func() interface{} {
-		req := http.Service().NewRequest(http.MethodGet, "/auth")
-		promise := wd.NewPromise(&AuthedStat{false}, req.DoAsync())
-		promise.OnSuccess(func(r *http.Response) wd.ModelUpdater {
-			u := new(model.User)
-			r.DecodeDataTo(u)
-			pdata.Service().Set("authToken", u.Token)
-			return func(au *AuthedStat) {
-				au.AuthGened = true
-			}
+	wade := wd.WadeUp("pg-home", "/web", func(wade *wd.Wade) {
+		wade.Pager().RegisterPages(map[string]string{
+			"/home":          "pg-home",
+			"/post":          "pg-post",
+			"/post/new":      "pg-post-new",
+			"/user":          "pg-user",
+			"/user/login":    "pg-user-login",
+			"/user/register": "pg-user-register",
+			"/404":           "pg-not-found",
 		})
-		return promise.Model()
-	})
+		wade.Pager().SetNotFoundPage("pg-not-found")
 
-	wade.Pager().RegisterHandler("pg-user-register", func() interface{} {
-		ureg := new(RegUser)
-		ureg.Validated.Init(ureg.Data)
+		wade.RegisterNewTag("t-userinfo", UserInfo{})
+		wade.RegisterNewTag("t-errorlist", ErrorListModel{})
+		wade.RegisterNewTag("t-test", Test{})
 
-		return ureg
+		wade.Pager().RegisterHandler("pg-user-login", func() interface{} {
+			req := http.Service().NewRequest(http.MethodGet, "/auth")
+			promise := wd.NewPromise(&AuthedStat{false}, req.DoAsync())
+			promise.OnSuccess(func(r *http.Response) wd.ModelUpdater {
+				u := new(model.User)
+				r.DecodeDataTo(u)
+				pdata.Service().Set("authToken", u.Token)
+				return func(au *AuthedStat) {
+					au.AuthGened = true
+				}
+			})
+			return promise.Model()
+		})
+
+		wade.Pager().RegisterHandler("pg-user-register", func() interface{} {
+			ureg := new(RegUser)
+			ureg.Validated.Init(ureg.Data)
+
+			return ureg
+		})
 	})
 
 	http.Service().AddHttpInterceptor(func(req *http.Request) {
