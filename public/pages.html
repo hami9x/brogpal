@@ -15,8 +15,7 @@
 			</wpage>
         </wpage>
 		<wpage id="pg-user-register" title="Register">
-			Username: <input type="text" bind-value="Data.Username"/>
-			<span bind-html="Data.Username"></span>
+			Username: <input type="text" bind-value="toUpper(Data.Username)"/>
 			<!--<t-errorlist wd-bind-errors="Errors.Username"></t-errorlist>-->
 			<!--<t-test bind="Error: Data.Username" wd-class-shit="Data.Shit"></t-test>-->
 			Password: <input type="password" bind-value="Data.Password"/>
@@ -24,6 +23,7 @@
 			<!--<t-test wd-bind-value="Data.Password"></t-test>-->
 			<a bind-on-click="Reset">Reset</a>
 			<a bind-on-click="Submit">Submit</a>
+			<p bind-html="concat(toUpper(Data.Username), toLower(Data.Password))"></p>
 		</wpage>
         <wpage id="pg-post" title="View posts">
             <p><a href=":pg-home">Home page.</a></p>
