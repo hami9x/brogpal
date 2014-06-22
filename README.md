@@ -16,6 +16,11 @@ Companion project of the Wade framework - Brogrammer's palace
     
 You should have `gopherjs` and `fresh` in $PATH as commands now.  
 
+##Install Go dependencies:
+    
+    go get -u github.com/phaikawl/brogpal
+    go get -u github.com/phaikawl/brogpal/server
+    
 ##Install javascript dependencies:
 - Install [bower](http://bower.io)
 - Go to public/, run:
