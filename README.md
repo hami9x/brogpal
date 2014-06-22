@@ -7,12 +7,10 @@ Companion project of the Wade framework - Brogrammer's palace
 ##Install Gopherjs:
 
     go get -u github.com/gopherjs/gopherjs
-    go install github.com/gopherjs/gopherjs
 
 ##Install fresh:
 
     go get -u github.com/pilu/fresh
-    go install github.com/pilu/fresh
     
 You should have `gopherjs` and `fresh` in $PATH as commands now.  
 
