@@ -21,9 +21,7 @@ You should have `gopherjs` and `fresh` in $PATH as commands now.
     
 ##Install javascript dependencies:
 - Install [bower](http://bower.io)
-- Go to public/, run:
-
-    bower install
+- Go to public/, run `bower install`
 
 ##Actual run
 Go to this project's directory, run:
