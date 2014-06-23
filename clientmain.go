@@ -47,10 +47,6 @@ func (r *RegUser) Submit() {
 		})
 }
 
-type Test struct {
-	Value string
-}
-
 type ErrorListModel struct {
 	Errors map[string]interface{}
 }
@@ -69,9 +65,9 @@ func main() {
 		})
 		wade.Pager().SetNotFoundPage("pg-not-found")
 
-		wade.RegisterNewTag("t-userinfo", UserInfo{})
-		wade.RegisterNewTag("t-errorlist", ErrorListModel{})
-		wade.RegisterNewTag("t-test", Test{})
+		//wade.RegisterNewTag("t-userinfo", UserInfo{})
+		//wade.RegisterNewTag("t-errorlist", ErrorListModel{})
+		wade.RegisterNewTag("t-test", UsernamePassword{})
 
 		wade.Pager().RegisterHandler("pg-user-login", func() interface{} {
 			req := http.Service().NewRequest(http.MethodGet, "/auth")
