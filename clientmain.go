@@ -53,7 +53,7 @@ type ErrorListModel struct {
 
 func main() {
 	//js.Global.Call("test", jquery.NewJQuery("title"))
-	wade := wd.WadeUp("pg-home", "/web", func(wade *wd.Wade) {
+	wade := wd.WadeUp("pg-home", "/web", "wade-content", "wpage-container", func(wade *wd.Wade) {
 		wade.Pager().RegisterPages(map[string]string{
 			"/home":          "pg-home",
 			"/post":          "pg-post",
@@ -69,7 +69,7 @@ func main() {
 		//wade.RegisterNewTag("t-errorlist", ErrorListModel{})
 		wade.RegisterNewTag("t-test", UsernamePassword{})
 
-		wade.Pager().RegisterHandler("pg-user-login", func() interface{} {
+		wade.Pager().RegisterController("pg-user-login", func() interface{} {
 			req := http.Service().NewRequest(http.MethodGet, "/auth")
 			promise := wd.NewPromise(&AuthedStat{false}, req.DoAsync())
 			promise.OnSuccess(func(r *http.Response) wd.ModelUpdater {
@@ -83,7 +83,7 @@ func main() {
 			return promise.Model()
 		})
 
-		wade.Pager().RegisterHandler("pg-user-register", func() interface{} {
+		wade.Pager().RegisterController("pg-user-register", func() interface{} {
 			ureg := new(RegUser)
 			ureg.Validated.Init(ureg.Data)
 
