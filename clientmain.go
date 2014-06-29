@@ -65,9 +65,9 @@ func main() {
 		})
 		wade.Pager().SetNotFoundPage("pg-not-found")
 
-		//wade.RegisterNewTag("t-userinfo", UserInfo{})
-		//wade.RegisterNewTag("t-errorlist", ErrorListModel{})
-		wade.RegisterNewTag("t-test", UsernamePassword{})
+		//wade.Custags().RegisterNew("t-userinfo", UserInfo{})
+		wade.Custags().RegisterNew("t-errorlist", ErrorListModel{})
+		wade.Custags().RegisterNew("t-test", UsernamePassword{})
 
 		wade.Pager().RegisterController("pg-user-login", func() interface{} {
 			req := http.Service().NewRequest(http.MethodGet, "/auth")
@@ -86,7 +86,11 @@ func main() {
 		wade.Pager().RegisterController("pg-user-register", func() interface{} {
 			ureg := new(RegUser)
 			ureg.Validated.Init(ureg.Data)
-
+			ureg.Validated.Errors = map[string]map[string]interface{}{
+				"Username": map[string]interface{}{
+					"invalid": "It's invalid, period.",
+				},
+			}
 			return ureg
 		})
 	})

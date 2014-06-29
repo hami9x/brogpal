@@ -15,9 +15,9 @@
 				</wpage>
 	        </wpage>
 			<wpage id="pg-user-register" title="Register">
-				Username: <input type="text" bind-value="toUpper(Data.Username)"/>
-				<!--<t-errorlist bind="Errors: Errors.Username"></t-errorlist>-->
-				Password: <input type="password" bind-value="Data.Password"/>
+				Username: <input type="text" bind-value="toUpper(Data.Username)"></input>
+				<t-errorlist bind="Errors: Errors.Username"></t-errorlist>
+				Password: <input type="password" bind-value="Data.Password"></input>
 				<!--<t-errorlist wd-bind-errors="Errors.Password"></t-errorlist>-->
 				<!--<t-test wd-bind-value="Data.Password"></t-test>-->
 				<a bind-on-click="Reset">Reset</a>
