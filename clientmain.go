@@ -34,17 +34,7 @@ func (r *RegUser) Reset() {
 func (r *RegUser) Submit() {
 	//validate here...
 	//then send
-	wd.SendFormTo("/api/user/register", r.Data, &r.Validated).OnSuccess(
-		func(r *http.Response) wd.ModelUpdater {
-			//ureg.Errors = js.Global.Call("createObj")
-			//println(ureg.Errors)
-			//err := r.DecodeDataTo(ureg.Errors)
-			//if err != nil {
-			//	panic(err.Error())
-			//}
-			//println(ureg.errors["Password"])
-			return nil
-		})
+	wd.SendFormTo("/api/user/register", r.Data, &r.Validated)
 }
 
 type ErrorListModel struct {
@@ -71,26 +61,19 @@ func main() {
 
 		wade.Pager().RegisterController("pg-user-login", func() interface{} {
 			req := http.Service().NewRequest(http.MethodGet, "/auth")
-			promise := wd.NewPromise(&AuthedStat{false}, req.DoAsync())
-			promise.OnSuccess(func(r *http.Response) wd.ModelUpdater {
+			as := &AuthedStat{false}
+			req.DoAsync().Done(func(r *http.Response) {
 				u := new(model.User)
 				r.DecodeDataTo(u)
 				pdata.Service().Set("authToken", u.Token)
-				return func(au *AuthedStat) {
-					au.AuthGened = true
-				}
+				as.AuthGened = true
 			})
-			return promise.Model()
+			return as
 		})
 
 		wade.Pager().RegisterController("pg-user-register", func() interface{} {
 			ureg := new(RegUser)
 			ureg.Validated.Init(ureg.Data)
-			ureg.Validated.Errors = map[string]map[string]interface{}{
-				"Username": map[string]interface{}{
-					"invalid": "It's invalid, period.",
-				},
-			}
 			return ureg
 		})
 	})

@@ -15,11 +15,10 @@
 				</wpage>
 	        </wpage>
 			<wpage id="pg-user-register" title="Register">
-				Username: <input type="text" bind-value="toUpper(Data.Username)"></input>
+				Username: <input type="text" bind-value="Data.Username"></input>
 				<t-errorlist bind="Errors: Errors.Username"></t-errorlist>
 				Password: <input type="password" bind-value="Data.Password"></input>
-				<!--<t-errorlist wd-bind-errors="Errors.Password"></t-errorlist>-->
-				<!--<t-test wd-bind-value="Data.Password"></t-test>-->
+				<t-errorlist bind="Errors: Errors.Password"></t-errorlist>
 				<a bind-on-click="Reset">Reset</a>
 				<a bind-on-click="Submit">Submit</a>
 				<p>Dom binding with helpers demo: <span bind-html="concat(toUpper(Data.Username), toLower(Data.Password))"></span></p>
