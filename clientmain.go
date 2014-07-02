@@ -37,6 +37,10 @@ func (r *RegUser) Submit() {
 	wd.SendFormTo("/api/user/register", r.Data, &r.Validated)
 }
 
+type PostView struct {
+	PostId int
+}
+
 type ErrorListModel struct {
 	Errors map[string]interface{}
 }
@@ -46,8 +50,9 @@ func main() {
 	wade := wd.WadeUp("pg-home", "/web", "wade-content", "wpage-container", func(wade *wd.Wade) {
 		wade.Pager().RegisterPages(map[string]string{
 			"/home":          "pg-home",
-			"/post":          "pg-post",
-			"/post/new":      "pg-post-new",
+			"/posts":         "pg-post",
+			"/posts/new":     "pg-post-new",
+			"/post/:postid":  "pg-post-view",
 			"/user":          "pg-user",
 			"/user/login":    "pg-user-login",
 			"/user/register": "pg-user-register",
@@ -59,7 +64,7 @@ func main() {
 		wade.Custags().RegisterNew("t-errorlist", ErrorListModel{})
 		wade.Custags().RegisterNew("t-test", UsernamePassword{})
 
-		wade.Pager().RegisterController("pg-user-login", func() interface{} {
+		wade.Pager().RegisterController("pg-user-login", func(p *wd.PageData) interface{} {
 			req := http.Service().NewRequest(http.MethodGet, "/auth")
 			as := &AuthedStat{false}
 			req.DoAsync().Done(func(r *http.Response) {
@@ -71,10 +76,16 @@ func main() {
 			return as
 		})
 
-		wade.Pager().RegisterController("pg-user-register", func() interface{} {
+		wade.Pager().RegisterController("pg-user-register", func(p *wd.PageData) interface{} {
 			ureg := new(RegUser)
 			ureg.Validated.Init(ureg.Data)
 			return ureg
+		})
+
+		wade.Pager().RegisterController("pg-post-view", func(p *wd.PageData) interface{} {
+			pv := new(PostView)
+			p.ExportParam("postid", &pv.PostId)
+			return pv
 		})
 	})
 
