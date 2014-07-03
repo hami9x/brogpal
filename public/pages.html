@@ -10,8 +10,8 @@
 			<wpage id="pg-user" title="User page">
 				<t-userinfo attr-name="Awesome" attr-age="99"></t-userinfo>
 				<wpage id="pg-user-login">
-					<!--<span bind-if="AuthGened">Authentication info is generated.</span>-->
-					<!--<span bind-unless="AuthGened">Generating auth info...</span>-->
+					<span bind-if="AuthGened">Authentication info is generated.</span>
+					<span bind-ifn="AuthGened">Generating auth info...</span>
 				</wpage>
 	        </wpage>
 			<wpage id="pg-user-register" title="Register">
