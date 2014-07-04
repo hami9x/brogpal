@@ -5,13 +5,13 @@
     <div class="error">
 		<ul>
 			<li bind-each="Errors -> key, error">
-				error type #<span bind-html="key"></span>
-				<span bind-html="error"></span>
+				error type #<% key %>
+				<% error %>
 			</li>
 		</ul>
 	</div>
 </welement>
 <welement id="t-test" attributes="Username Password">
-	<p>My username is "<strong bind-html="Username"></strong>"</p>
-	<p>and my password is "<span bind-html="Password"></span>"</p>
+	<p>My username is "<strong><% Username %></strong>"</p>
+	<p>and my password is "<% Password %>"</p>
 </welement>

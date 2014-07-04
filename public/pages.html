@@ -2,9 +2,9 @@
 		<wpage>
 	        <t-userinfo attr-name="Hai Thanh Nguyen" attr-age="18"></t-userinfo>
 	        <wpage id="pg-home" title="Wade Home">
-	            <p><a bind-page="url('pg-post')">View posts.</a></p>
-				<p><a bind-page="url('pg-user-login')">Login.</a></p>
-				<p><a bind-page="url('pg-user-register')">Register.</a></p>
+	            <p><a bind-page="url(`pg-post`)">View posts.</a></p>
+				<p><a bind-page="url(`pg-user-login`)">Login.</a></p>
+				<p><a bind-page="url(`pg-user-register`)">Register.</a></p>
 	            <p><a href="http://google.com">External link.</a></p>
 	        </wpage>
 			<wpage id="pg-user" title="User page">
@@ -27,14 +27,14 @@
 				</div>
 			</wpage>
 	        <wpage id="pg-post" title="Posts">
-	            <p><a bind-page="url('pg-home')">Home page.</a></p>
-	            <p><a bind-page="url('pg-post-new')">Post an article.</a></p>
-				<p><a bind-page="url('pg-post-view', 42)">View post #42.</a></p>
+	            <p><a bind-page="url(`pg-home`)">Home page.</a></p>
+	            <p><a bind-page="url(`pg-post-new`)">Post an article.</a></p>
+				<p><a bind-page="url(`pg-post-view`, 42)">View post #42.</a></p>
 	            <wpage id="pg-post-new" title="Post an article">
-	                <p><a bind-page="url('pg-post')">Back to view.</a></p>
+	                <p><a bind-page="url(`pg-post`)">Back to view.</a></p>
 	            </wpage>
 				<wpage id="pg-post-view" title="Post view">
-					Viewing post #<span bind-html="PostId"></span>
+					Viewing post #<% PostId %>
 	            </wpage>
 	        </wpage>
 		</wpage>

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"reflect"
+
 	"github.com/phaikawl/brogpal/model"
 	wd "github.com/phaikawl/wade"
 	"github.com/phaikawl/wade/services/http"
@@ -22,7 +24,7 @@ type UsernamePassword struct {
 }
 
 type RegUser struct {
-	wd.Validated
+	Validated
 	Data UsernamePassword
 }
 
@@ -34,7 +36,7 @@ func (r *RegUser) Reset() {
 func (r *RegUser) Submit() {
 	//validate here...
 	//then send
-	wd.SendFormTo("/api/user/register", r.Data, &r.Validated)
+	wd.SendFormTo("/api/user/register", r.Data, &r.Errors)
 }
 
 type PostView struct {
@@ -43,6 +45,25 @@ type PostView struct {
 
 type ErrorListModel struct {
 	Errors map[string]interface{}
+}
+
+type ErrorMap map[string]map[string]interface{}
+
+type Validated struct {
+	Errors ErrorMap
+}
+
+func (v *Validated) Init(dataModel interface{}) {
+	m := make(ErrorMap)
+	typ := reflect.TypeOf(dataModel)
+	if typ.Kind() != reflect.Struct {
+		panic("Validated data model passed to Init() must be a struct.")
+	}
+	for i := 0; i < typ.NumField(); i++ {
+		f := typ.Field(i)
+		m[f.Name] = make(map[string]interface{})
+	}
+	v.Errors = m
 }
 
 func main() {
